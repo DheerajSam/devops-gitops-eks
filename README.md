@@ -73,10 +73,10 @@ kubectl scale deployment gitops-app --replicas=5
 
 ## 📸 Screenshots
 
-![EKS Nodes Ready](screenshots/eks-nodes.png)
-![LoadBalancer with Public DNS](screenshots/loadbalancer.png)
-![ArgoCD Application — Healthy & Synced](screenshots/argocd-synced.png)
-![Self-Healing in Action](screenshots/self-healing.png)
+![EKS Nodes Ready](eks-nodes.png)
+![LoadBalancer with Public DNS](loadbalancer.png)
+![ArgoCD Application — Healthy & Synced](argocd-synced.png)
+![Self-Healing in Action](self-healing.png)
 
 ## 🚀 How to Reproduce
 
