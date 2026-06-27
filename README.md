@@ -127,6 +127,37 @@ terraform destroy
 - **GitOps vs traditional CI/CD** — Git becomes the single source of truth; the cluster is constantly reconciled to match it, rather than being pushed to imperatively
 - **Security practice** — `.tfstate` files excluded from version control via `.gitignore`; in a team environment, remote state in S3 with DynamoDB locking would be the next step
 
+🧹 Cleanup / Teardown
+
+To avoid ongoing AWS charges, tear down all resources after each working session:
+
+bash# 1. Remove ArgoCD completely
+kubectl delete -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+# 2. Force-remove the namespace (cleans up any leftover resources from step 1)
+kubectl delete namespace argocd
+
+# 3. Verify ArgoCD is fully gone
+kubectl get pods -n argocd
+# Expected: "No resources found" or "namespace not found"
+
+# 4. Destroy all AWS infrastructure provisioned by Terraform
+cd terraform
+terraform destroy
+# Type 'yes' when prompted
+
+# 5. Confirm nothing is left running
+aws eks list-clusters --region ap-south-1
+# Expected: empty list
+
+Note on Step 1: You may see an error like networkpolicies.networking.k8s.io "argocd-server-network-policy" not found. This is harmless — it just means that specific resource was already deleted. Step 2 cleans up anything left behind regardless of individual errors in Step 1.
+
+What gets destroyed:
+
+ResourceRemoved ByArgoCD (7 pods, services, CRDs)Steps 1 + 2EKS Cluster + Node Group (2x t3.medium)Step 4VPC, Subnets, NAT Gateway, IGWStep 4IAM RolesStep 4
+
+Total: 22 Terraform-managed AWS resources + full ArgoCD installation, all fully reproducible on demand.
+
 ## 👤 Author
 
 **Dheeraj Samudrala** — DevOps Engineer
