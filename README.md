@@ -131,7 +131,7 @@ terraform destroy
 
 To avoid ongoing AWS charges, tear down all resources after each working session:
 
-bash# 1. Remove ArgoCD completely
+# 1. Remove ArgoCD completely
 kubectl delete -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
 # 2. Force-remove the namespace (cleans up any leftover resources from step 1)
