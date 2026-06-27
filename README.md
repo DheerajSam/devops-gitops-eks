@@ -73,9 +73,24 @@ kubectl scale deployment gitops-app --replicas=5
 
 ## 📸 Screenshots
 
+**1. EKS Cluster — Worker Nodes Ready**
+Two `t3.medium` worker nodes provisioned by Terraform and registered with the EKS control plane, both showing `Ready` status — confirms the managed Kubernetes cluster is fully operational.
+
 ![EKS Nodes Ready](eks-nodes.png)
+
+**2. Kubernetes Service — AWS Load Balancer Provisioned**
+The `gitops-app-service` is of type `LoadBalancer`. Kubernetes automatically triggered AWS to provision a real Network Load Balancer, visible here as a public DNS endpoint (`EXTERNAL-IP` column) — this is how production traffic reaches the app, not a NodePort or manual proxy.
+
 ![LoadBalancer with Public DNS](loadbalancer.png)
+
+**3. ArgoCD Application — Healthy & Synced**
+The ArgoCD UI showing the `gitops-app` Application with status `Healthy` (all pods running correctly) and `Synced` (cluster state exactly matches the `k8s/` folder in this GitHub repo) — confirming the GitOps pipeline is actively reconciling.
+
 ![ArgoCD Application — Healthy & Synced](argocd-synced.png)
+
+**4. Self-Healing in Action**
+Terminal output after manually running `kubectl scale deployment gitops-app --replicas=5`. Within seconds, ArgoCD detected this as drift from the Git-defined state (2 replicas) and automatically terminated the 3 extra pods — no human intervention, no `kubectl` command to revert it. This is GitOps self-healing working exactly as intended.
+
 ![Self-Healing in Action](self-healing.png)
 
 ## 🚀 How to Reproduce
