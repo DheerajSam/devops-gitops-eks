@@ -244,4 +244,4 @@ For a team environment, remote Terraform state and state locking would be a natu
 DevOps / Cloud Engineering
 
 - GitHub: https://github.com/DheerajSam
-- LinkedIn: https://www.linkedin.com/in/dheeraj-samudrala-b99b9540/
+- LinkedIn: https://www.linkedin.com/in/dheeraj-cloud/
